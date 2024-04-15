@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "mongomessage"
+version = "0.1.0"
+description = ""
+authors = ["Марк Крылов <mark.krylov93@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.110.1"
+uvicorn = {extras = ["standard"], version = "^0.29.0"}
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {version = "^1.7",extras = ["bcrypt"]}
+motor = "^3.4.0"
+python-dotenv = "^1.0.1"
+pydantic-settings = "^2.2.1"
+email-validator = "^2.1.1"
+python-multipart = "^0.0.9"
+beanie = "^1.25.0"
+black = "^24.4.0"
+isort = "^5.13.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
