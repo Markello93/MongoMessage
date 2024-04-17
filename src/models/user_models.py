@@ -31,9 +31,9 @@ class User(Document):
             return self.email == other.email
         return False
 
-    @property
-    def create(self) -> datetime:
-        return self.id.generation_time
+    # @property
+    # def create(self) -> datetime:
+    #     return self.id.generation_time
 
     @classmethod
     async def by_email(self, email: str) -> "User":

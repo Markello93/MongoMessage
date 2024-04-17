@@ -4,6 +4,7 @@ from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from src.core.settings import settings
+from src.models.message_model import Message
 from src.models.user_models import User
 
 
@@ -13,7 +14,8 @@ async def connect_to_mongodb() -> None:
     await init_beanie(
         database=db_client,
         document_models=[
-            User
+            User,
+            Message
         ]
     )
     logging.info("Connected to database")
