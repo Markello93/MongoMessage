@@ -1,14 +1,29 @@
 version: "3.7"
 services:
+  app:
+    container_name: "app"
+    image: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - custom
+    depends_on:
+      - mongo_db
+    env_file: .env
+
   mongo_db:
-      image: mongo
-      container_name: "mongo_db"
-      ports:
-        - "27017:27017"
-      volumes:
-        - mongodb_data:/data/db
-      networks:
-        - custom
+    image: mongo
+    container_name: "mongo_db"
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - custom
+    env_file: .env
 
 volumes:
   mongodb_data:
