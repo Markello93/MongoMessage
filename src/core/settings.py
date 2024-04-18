@@ -7,7 +7,6 @@ load_dotenv()
 
 
 class Settings(BaseSettings):
-    """Project settings."""
 
     DEBUG: bool = False
     APP_ROOT_PATH: str = ""
@@ -23,7 +22,7 @@ class Settings(BaseSettings):
 
     @property
     def mongo_url(self) -> str:
-        """Get link for MongoDB connection."""
+        """Генерация ссылки для подключения к MongoDB."""
         if self.MONGO_USER and self.MONGO_PASS:
             return f"mongodb://{self.MONGO_USER}:{self.MONGO_PASS}@{self.MONGO_HOST}:{self.MONGO_PORT}/{self.MONGO_DB}"
         else:

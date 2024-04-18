@@ -8,7 +8,9 @@ from src.api.routers.messenger_router import chat_router
 
 
 def create_app() -> FastAPI:
-    app = FastAPI(debug=settings.DEBUG, root_path=settings.APP_ROOT_PATH)
+    app = FastAPI(title="API мессенджера с регистрацией пользователей",
+    description="APi представляет функционал регистрации, доступ в чат осуществляется по JWT access token.",
+    version="1.0", debug=settings.DEBUG, root_path=settings.APP_ROOT_PATH)
     app.include_router(user_router, prefix='/users', tags=["users"])
     app.include_router(auth_router, prefix='/auth', tags=["auth"])
     app.include_router(chat_router)

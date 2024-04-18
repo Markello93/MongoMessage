@@ -11,7 +11,7 @@ from src.services.websocket_logic import get_user_by_token, manager
 
 chat_router = APIRouter(
     prefix="/messenger",
-    tags=["Chat"],
+    tags=["chat"],
 )
 
 templates = Jinja2Templates(directory="src/templates")

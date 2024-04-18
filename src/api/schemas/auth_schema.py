@@ -9,5 +9,5 @@ class TokenSchema(BaseModel):
 
 
 class TokenPayload(BaseModel):
-    sub: UUID = None
-    exp: int = None
+    sub: UUID | None
+    exp: int | None

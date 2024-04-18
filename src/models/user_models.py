@@ -21,6 +21,5 @@ class User(Document):
     def __str__(self) -> str:
         return self.email
 
-
     class Settings:
         name = "users"

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, File, UploadFile
 
 from src.api.schemas.user_schema import (UserAuth, UserCreate, UserFind,
                                          UserOut, UserUpdateRequest)
@@ -36,3 +36,15 @@ async def get_user_by_username(username: str):
     user = await UserService.get_user_by_username(username)
 
     return user
+
+
+@user_router.post(
+    "/add_picture", summary="Загрузить изображение и привязать его к пользователю"
+)
+async def add_picture(
+    file: UploadFile = File(...),
+    user: User = Depends(UserService.get_current_user),
+):
+    picture_path = await UserService.save_picture(user.username, file)
+    await UserService.update_user_picture(user.user_id, picture_path)
+    return {"message": "Изображение успешно добавлено к пользователю"}

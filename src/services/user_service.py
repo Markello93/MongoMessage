@@ -1,20 +1,22 @@
+import os
+import shutil
 from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
 import pymongo
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, UploadFile, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from pydantic import ValidationError
 
+from src.api.schemas.auth_schema import TokenPayload
+from src.api.schemas.user_schema import UserAuth, UserUpdateRequest
 from src.core.secure import get_password, verify_password
 from src.core.settings import settings
 from src.models.user_models import User
-from src.api.schemas.auth_schema import TokenPayload
-from src.api.schemas.user_schema import UserAuth, UserUpdateRequest
 
-reuseable_oauth = OAuth2PasswordBearer(tokenUrl=f"auth/login", scheme_name="JWT")
+get_oauth = OAuth2PasswordBearer(tokenUrl=f"auth/login", scheme_name="JWT")
 
 
 class UserService:
@@ -52,17 +54,20 @@ class UserService:
     async def get_user_by_username(username: str) -> Optional[User]:
         user = await User.find_one(User.username == username)
         if user is None:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User '{username}' not found")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"User '{username}' not found",
+            )
         return user
 
     @staticmethod
-    async def get_user_by_id(id: UUID) -> Optional[User]:
-        user = await User.find_one(User.user_id == id)
+    async def get_user_by_id(user_id: UUID) -> Optional[User]:
+        user = await User.find_one(User.user_id == user_id)
         return user
 
     @staticmethod
-    async def update_user(id: UUID, schema: UserUpdateRequest) -> User:
-        user = await User.find_one(User.user_id == id)
+    async def update_user(user_id: UUID, schema: UserUpdateRequest) -> User:
+        user = await User.find_one(User.user_id == user_id)
         if not user:
             raise pymongo.errors.OperationFailure("User not found")
 
@@ -70,7 +75,7 @@ class UserService:
         return user
 
     @staticmethod
-    async def get_current_user(token: str = Depends(reuseable_oauth)) -> User:
+    async def get_current_user(token: str = Depends(get_oauth)) -> User:
         try:
             payload = jwt.decode(
                 token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
@@ -98,4 +103,23 @@ class UserService:
                 detail="Could not find user",
             )
 
+        return user
+
+    @staticmethod
+    async def save_picture(username: str, file: UploadFile) -> str:
+        os.makedirs("src/uploads", exist_ok=True)
+        picture_path = f"src/uploads/{username}-{file.filename}"
+        with open(picture_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        return picture_path
+
+    @staticmethod
+    async def update_user_picture(user_id: UUID, picture_path: str) -> User:
+        user = await User.find_one(User.user_id == user_id)
+        if not user:
+            raise ValueError("Пользователь не найден")
+
+        user.picture = picture_path
+        await user.save()
         return user

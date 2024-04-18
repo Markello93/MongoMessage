@@ -21,22 +21,21 @@ class UserOut(BaseModel):
     username: str
     email: EmailStr
     first_name: Optional[str]
-    phone: Optional[str] = None
-    picture: Optional[str] = None
+    phone: str | None
+    picture: str | None
     last_name: Optional[str]
 
 
 class UserFind(BaseModel):
     username: str
-    first_name: Optional[str]
-    phone: Optional[str] = None
-    picture: Optional[str] = None
-    last_name: Optional[str]
+    first_name: str
+    phone: str | None
+    picture: str | None
+    last_name: str
 
 
 class UserUpdateRequest(BaseModel):
-    email: Optional[EmailStr] = None
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    phone: Optional[str] = None
-    picture: Optional[str] = None
+    email: EmailStr | None
+    first_name: str | None
+    last_name: str | None
+    phone: str | None

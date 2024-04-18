@@ -1,13 +1,7 @@
 from datetime import datetime
-
-from fastapi import (
-    WebSocket,
-    WebSocketException,
-    status,
-    Query,
-)
 from typing import Annotated
 
+from fastapi import Query, WebSocket, WebSocketException, status
 from starlette.exceptions import HTTPException
 
 from src.api.schemas.message_schema import SendMessage
