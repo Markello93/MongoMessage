@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends
-from starlette import status
 
+from src.api.schemas.user_schema import (UserAuth, UserCreate, UserFind,
+                                         UserOut, UserUpdateRequest)
 from src.models.user_models import User
-from src.api.schemas.user_schema import UserAuth, UserFind, UserOut, UserUpdateRequest
 from src.services.user_service import UserService
 
 user_router = APIRouter()
 
 
-@user_router.post("/create", summary="Создание пользователя", response_model=UserOut)
+@user_router.post("/create", summary="Создание пользователя", response_model=UserCreate)
 async def create_user(schema: UserAuth):
     return await UserService.create_user(schema)
 
@@ -17,7 +17,7 @@ async def create_user(schema: UserAuth):
     "/me", summary="Информация об авторизированном пользователе", response_model=UserOut
 )
 async def get_me(user: User = Depends(UserService.get_current_user)):
-    return {"input_data": user.model_dump(), "statusCode": status.HTTP_201_CREATED}
+    return user
 
 
 @user_router.post(
@@ -34,4 +34,5 @@ async def update_user(
 )
 async def get_user_by_username(username: str):
     user = await UserService.get_user_by_username(username)
+
     return user

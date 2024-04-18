@@ -10,6 +10,12 @@ class UserAuth(BaseModel):
     password: str = Field(..., min_length=5, max_length=24, description="user password")
 
 
+class UserCreate(BaseModel):
+    user_id: UUID
+    username: str
+    email: EmailStr
+
+
 class UserOut(BaseModel):
     user_id: UUID
     username: str
@@ -18,7 +24,6 @@ class UserOut(BaseModel):
     phone: Optional[str] = None
     picture: Optional[str] = None
     last_name: Optional[str]
-    disabled: Optional[bool] = False
 
 
 class UserFind(BaseModel):

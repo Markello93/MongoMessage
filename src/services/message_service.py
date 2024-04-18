@@ -45,7 +45,7 @@ class MessageService:
     ) -> List[Message]:
         messages = await Message.find(
             {"$or": [{"sender_username": username}, {"receiver_username": username}]},
-            sort=[("created_at", SortDirection.DESCENDING)],
+            sort=[("created_at", SortDirection.ASCENDING)],
             limit=limit,
         ).to_list()
         return messages

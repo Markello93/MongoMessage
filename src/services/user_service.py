@@ -51,6 +51,8 @@ class UserService:
     @staticmethod
     async def get_user_by_username(username: str) -> Optional[User]:
         user = await User.find_one(User.username == username)
+        if user is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User '{username}' not found")
         return user
 
     @staticmethod

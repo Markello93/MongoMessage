@@ -5,9 +5,9 @@ from fastapi.security import OAuth2PasswordRequestForm
 from jose import jwt
 from pydantic import ValidationError
 
+from src.api.schemas.auth_schema import TokenPayload, TokenSchema
 from src.core.secure import create_access_token, create_refresh_token
 from src.core.settings import settings
-from src.api.schemas.auth_schema import TokenPayload, TokenSchema
 from src.services.user_service import UserService
 
 auth_router = APIRouter()

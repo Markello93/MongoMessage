@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat</title>
+</head>
+<body>
+    <h1>WebSocket Chat</h1>
+    <form action="" onsubmit="connectWebSocket(event)">
+        <label>Token: <input type="text" id="tokenInput" autocomplete="off" /></label>
+        <button type="submit">Connect</button>
+    </form>
+    <ul id="messages"></ul>
+    <input type="text" id="messageInput" autocomplete="off" />
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        let ws;
+
+        async function connectWebSocket(event) {
+            event.preventDefault();
+            const token = document.getElementById("tokenInput").value;
+            try {
+                ws = new WebSocket(`ws://localhost:8000/messenger/ws/?token=${token}`);
+                ws.onmessage = function(event) {
+                    const messages = document.getElementById("messages");
+                    const message = document.createElement("li");
+                    message.textContent = event.data;
+                    messages.appendChild(message);
+                };
+            } catch (error) {
+                console.error("Failed to connect:", error);
+            }
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById("messageInput");
+            const message = messageInput.value;
+            ws.send(message);
+            messageInput.value = "";
+        }
+    </script>
+</body>
+</html>

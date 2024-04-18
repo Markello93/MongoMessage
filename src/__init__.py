@@ -3,7 +3,8 @@ from fastapi import FastAPI
 from src.api.routers.user_router import user_router
 from src.api.routers.auth import auth_router
 from src.core.settings import settings
-from src.services.chat_ws import chat_router
+from src.api.routers.messenger_router import chat_router
+# from src.services.websocket_logic import chat_router
 
 
 def create_app() -> FastAPI:

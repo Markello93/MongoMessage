@@ -11,11 +11,5 @@ from src.models.user_models import User
 async def connect_to_mongodb() -> None:
     logging.info("Connect to database..")
     db_client = AsyncIOMotorClient(settings.mongo_url)[settings.MONGO_DB]
-    await init_beanie(
-        database=db_client,
-        document_models=[
-            User,
-            Message
-        ]
-    )
+    await init_beanie(database=db_client, document_models=[User, Message])
     logging.info("Connected to database")
